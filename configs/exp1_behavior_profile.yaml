@@ -1,0 +1,53 @@
+# FedLLM-Attack Experiment 1 Configuration
+# Local vs. Global Behavior Profile
+# ==========================================
+
+# ===== Model Configuration =====
+model_name_or_path: "meta-llama/Llama-2-7b-hf"
+use_peft: true
+peft_lora_r: 8
+peft_lora_alpha: 16
+load_in_8bit: false
+load_in_4bit: false
+
+# ===== Training Configuration =====
+learning_rate: 2e-5
+batch_size: 4
+seq_length: 512
+gradient_accumulation_steps: 1
+num_train_epochs: 3
+max_steps: 50
+gradient_checkpointing: true
+
+# ===== Federated Learning Configuration =====
+fed_alg: "fedavg"
+num_rounds: 100
+num_clients: 10
+sample_clients: 3
+split_strategy: "iid"
+num_data_per_client: 500
+
+# ===== Dataset Configuration =====
+# Benign clients (e.g., 7 clients with clean data)
+benign_dataset_names:
+  - "lucasmccabe-lmi/CodeAlpaca-20k"
+benign_num_clients: 7
+
+# Malicious clients (e.g., 3 clients with backdoor data)
+malicious_dataset_names:
+  - "MaliciousGen"
+malicious_num_clients: 3
+
+# ===== Experiment 1 Specific Configuration =====
+experiment:
+  name: "exp1_behavior_profile"
+  target_topic: "nuclear weapons"
+  eval_frequency: 5  # Evaluate every N rounds
+  save_results: true
+
+# ===== Output Configuration =====
+output_dir: "./outputs/exp1_behavior_profile"
+log_with: "none"
+save_steps: 50
+save_total_limit: 5
+seed: 2023
